@@ -33,7 +33,16 @@ public abstract class Conta implements ITaxas{
     }
 
 
-    public boolean sacar(double valor) {
+    public boolean sacar(double valor) throws ValorNegativoException, SemLimiteException{
+
+        if(valor < 0){
+            throw new ValorNegativoException("Valor inválido:"+valor);
+        }
+
+        if(valor > this.getLimite()){
+            throw new SemLimiteException("Valor acima do limite:"+valor);
+        }
+
         if (valor >= 0 && valor <= this.limite) {
             this.saldo -= valor;
             this.operacoes.add (new OperacaoSaque(valor));
@@ -44,13 +53,17 @@ public abstract class Conta implements ITaxas{
         return false;
     }
 
-    public void depositar(double valor) {
+    public void depositar(double valor) throws ValorNegativoException{
+
+        if (valor < 0 ){
+            throw new ValorNegativoException("Valor inválido:"+ valor);
+        }
         this.saldo += valor;
         this.operacoes.add(new OperacaoDeposito(valor));
         cont++;
     }
 
-    public boolean transferir(Conta destino, double valor) {
+    public boolean transferir(Conta destino, double valor) throws ValorNegativoException,SemLimiteException{
         boolean valorSacado = this.sacar(valor);
         if (valorSacado) {
             destino.depositar(valor);
@@ -147,6 +160,6 @@ public abstract class Conta implements ITaxas{
         this.dono = dono;
     }
 
-    public abstract boolean setLimite(double limite);
+    public abstract boolean setLimite(double limite) throws IllegalArgumentException;
 }
 
