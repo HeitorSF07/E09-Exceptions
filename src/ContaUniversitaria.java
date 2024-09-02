@@ -5,9 +5,9 @@ public class ContaUniversitaria extends Conta implements ITaxas{
     }
     public boolean setLimite(double limite){
         if (limite < 0 || limite >500) {
-            this.limite = 0;
-            System.out.println("Limite inválido para conta universitária");
-            return false;
+
+            throw new IllegalArgumentException("Limite inválido para conta universitária");
+
         } else {
             this.limite = limite;
             return true;
