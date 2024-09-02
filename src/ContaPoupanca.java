@@ -5,9 +5,7 @@ public class ContaPoupanca extends Conta implements ITaxas{
     }
     public boolean setLimite(double limite){
         if (limite < 100 || limite >1000) {
-            this.limite = 0;
-            System.out.println("Limite inválido para conta poupança");
-            return false;
+            throw new IllegalArgumentException("Limite inválido para conta poupança");
         } else {
             this.limite = limite;
             return true;
